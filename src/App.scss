@@ -1,0 +1,25 @@
+.square {
+    width: 50px;
+    height: 50px;
+
+    &.selected {
+        box-shadow: inset 0 0 10px #f8a100,
+    }
+
+    &.black {
+        box-shadow: inset 0 0 20px #0000007f,
+    }
+}
+
+.board::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 500px;
+    width: 550px;
+    content: '';
+    background: radial-gradient(circle, rgba(255,215,230,1) 0%, rgba(255,178,207,0.95) 69%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    opacity: 50%;
+    mix-blend-mode: soft-light;
+}
