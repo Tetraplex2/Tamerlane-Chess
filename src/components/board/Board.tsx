@@ -12,7 +12,7 @@ function Cell(props: { type: "white" | "black" | "void" }) {
 }
 
 export function ChessBoard(props: { side: "white" | "black" }) {
-    const board = [];
+    let board = [];
     for (let i = 0; i < HEIGHT; i++) {
         const row = [];
 
@@ -24,7 +24,9 @@ export function ChessBoard(props: { side: "white" | "black" }) {
 
         if (i === 8) row.push(<Cell type="white" />);
 
-        board.push(<div key={i} style={{ display: "flex" }}>{row}</div>);
+        // board.push(<div key={i} style={{ display: "flex" }}>{row}</div>);
+        board.push(row);
     }
+    board = board.map((row, i) => <div key={i} className="row">{row}</div>);
     return <div className={"board"}>{props.side === "white" ? board : board.reverse()}</div>;
 };
