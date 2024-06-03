@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.scss";
-import { ChessBoard } from "./components/board/Board";
+import { BOARD } from "./components/consts";
 
 function App() {
-    return <ChessBoard side="white" />;
+    return BOARD.render();
 }
 
 export default App;
