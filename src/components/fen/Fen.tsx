@@ -1,5 +1,5 @@
 import { Piece, pieceType } from "../pieces/Pieces";
-import { DEFAULT_FEN, BOARD } from "../consts";
+import { DEFAULT_FEN } from "../consts";
 
 export function coordsToKey(x: number, y: number): string {
     if (x < 1 || x > 11)
@@ -35,7 +35,7 @@ export class Fen {
     private splitFen(fen: string) {
         const res: string[] = [];
         let seq = "";
-    
+
         for (let c of fen) {
             if (c   === '-') { seq  = c; continue; }
             if (seq === '-') { seq += c;           }
@@ -48,16 +48,17 @@ export class Fen {
             res.push(seq);
             seq = "";
         }
-    
+
         return res;
     }
 
-    private codeToPiece(token: string): Piece | null {
+    private codeToPiece(token: string): JSX.Element | null {
         if (!token) return null;
         const isPawn = token.at(0) === '-';
         const side = token === token.toUpperCase() ? "white" : "black";
         const code = token.at(-1)!.toLowerCase();
-        return new Piece({ side: side, type: Fen.codes[code as keyof { [name: string]: string }] as pieceType, pawn: isPawn });
+        // return new Piece({ side: side, type: Fen.codes[code as keyof { [name: string]: string }] as pieceType, pawn: isPawn });
+        return <Piece side={side} type={Fen.codes[code as keyof { [name: string]: string }] as pieceType} pawn={isPawn} />;
     }
 
     private initPieces(codesMap: string[][]) {
@@ -65,13 +66,12 @@ export class Fen {
         for (let y = 0; y < 10; y++)
             for (let x = 0; x < 11; x++)
                 result[y][x] = this.codeToPiece(codesMap[y][x]);
-        console.log(result);
         return result;
     }
 
     public decode(fen: string = DEFAULT_FEN) {
         const result: string[][] = Array.from({ length: 10 }, () => new Array(11));
-        
+
         let x: number = 0;
         let y: number = 0;
         for (let token of this.splitFen(fen)) {
@@ -79,7 +79,6 @@ export class Fen {
             else if (token === '/') { x = 0; y++; }
             else { result[y][x] = token; x++; }
         }
-        console.log(result);
         return this.initPieces(result);
     }
 }

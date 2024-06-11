@@ -1,9 +1,11 @@
 import React from "react";
 import "./App.scss";
-import { BOARD } from "./components/consts";
+import { ChessBoard } from "./components/board/Board";
 
-function App() {
-    return BOARD.render();
+class App extends React.Component {
+    render() {
+        return <ChessBoard side="white" />;
+    }
 }
 
 export default App;

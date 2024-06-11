@@ -4,17 +4,17 @@ import { HEIGHT, THEME, WIDTH } from "../consts";
 // import { coordsToKey } from "../../components/fen/Fen";
 import "./Board.scss";
 import React from "react";
-import { Piece } from "../pieces/Pieces";
+// import { Piece } from "../pieces/Pieces";
 import { Fen } from "../fen/Fen";
 
 class Cell extends React.Component {
     type: "white" | "black" | "void";
     pos: { x: number, y: number };
     state: {
-        piece: Piece | null,
+        piece: JSX.Element | null,
     };
 
-    constructor(props: { piece?: Piece, type?: "white" | "black", x: number, y: number }) {
+    constructor(props: { piece?: JSX.Element, type?: "white" | "black", x: number, y: number }) {
         super(props);
         this.state = { piece: props.piece ? props.piece : null };
         this.type = props.type ? props.type : "void";
@@ -29,18 +29,19 @@ class Cell extends React.Component {
             }}
             className={`${this.type} square`}
         >
-            { this.state.piece?.render() }
+            { this.state.piece }
         </div>;
     }
 }
 
-export class ChessBoard extends React.Component {
+export class ChessBoard extends React.Component<{ side?: "white" | "black" }> {
     state: {
         rows: Cell[][];
         side: "white" | "black";
     };
 
-    constructor(props: { side: "white" | "black" }) {
+    // constructor(props: { side: "white" | "black" | undefined }) {
+    constructor(props: { side?: "white" | "black"; }) {
         super(props);
         const rows: Cell[][] = [];
 
@@ -66,7 +67,9 @@ export class ChessBoard extends React.Component {
             rows: rows,
             side: props.side ? props.side : "white"
         };
+    }
 
+    componentDidMount() {
         this.setPieces();
     }
 
@@ -76,7 +79,7 @@ export class ChessBoard extends React.Component {
         for (let i = 0; i < 10; i++)
             for (let j = 0; j < 11; j++)
                 if (pieces[i][j]) cells[i][j + 1].state = { piece: pieces[i][j] };
-        this.state = { side: this.state.side, rows: cells };
+        this.setState({ side: this.state.side, rows: cells });
     }
 
     render() {
